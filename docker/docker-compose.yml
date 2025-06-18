@@ -1,39 +1,29 @@
+version: "3.8"
 
 services:
-  api_gateway:
+  ingestion_service:
     build:
-      context: ..
-      dockerfile: docker/Dockerfile
-    container_name: api_gateway
+      context: ../ingestion_service
     ports:
-      - "8000:8000"
+      - "8001:8001"
+    volumes:
+      - ../ingestion_service:/app
     depends_on:
       - redis
-      - postgres
-    environment:
-      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/reports_db
-      - REDIS_URL=redis://redis:6379
-    volumes:
-      - ../:/app
-    command: uvicorn api_gateway.main:app --host 0.0.0.0 --port 8000 --reload
 
   redis:
     image: redis:7
-    container_name: redis
     ports:
       - "6379:6379"
 
-  postgres:
-    image: postgres:15
-    container_name: postgres
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: reports_db
+  celery_worker:
+    build:
+      context: ../ingestion_service
+      dockerfile: Dockerfile
+    command: celery -A celery_app worker --loglevel=info
+    depends_on:
+      - redis
     volumes:
-      - pgdata:/var/lib/postgresql/data
-
-volumes:
-  pgdata:
+      - ../ingestion_service:/app
+    environment:
+      - PYTHONPATH=/app
