@@ -1,0 +1,11 @@
+{
+  "type": "dicom",
+  "content": {
+    "PatientName": "CON04_07172008",
+    "StudyDate": "20080717",
+    "Modality": "MR",
+    "StudyDescription": "INVESTIGATORS^Benner"
+  },
+  "file_id": "6d01444d-2c16-4276-b757-d79063266972",
+  "filename": "1726966192_97000-000017-000002.dcm"
+}

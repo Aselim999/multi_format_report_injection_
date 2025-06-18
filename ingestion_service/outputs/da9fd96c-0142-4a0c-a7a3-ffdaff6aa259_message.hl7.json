@@ -1,0 +1,8 @@
+{
+  "type": "hl7",
+  "segments": [
+    "MSH|^~\\&|SendingApp|SendingFac|ReceivingApp|ReceivingFac|202506181200||ADT^A01|MSGID1234|P|2.5\nPID|1||123456^^^HOSP^MR||Doe^John||19800101|M|||123 Main St^^Metropolis^NY^12345||555-1234\nPV1|1|I|W^389^1^UAB||||12345^Smith^John^A|||SUR|||||1234567890|A"
+  ],
+  "file_id": "da9fd96c-0142-4a0c-a7a3-ffdaff6aa259",
+  "filename": "message.hl7"
+}

@@ -1,11 +1,9 @@
-version: "3.8"
-
 services:
   ingestion_service:
     build:
       context: ../ingestion_service
     ports:
-      - "8001:8001"
+      - "8000:8000"
     volumes:
       - ../ingestion_service:/app
     depends_on:
@@ -19,8 +17,7 @@ services:
   celery_worker:
     build:
       context: ../ingestion_service
-      dockerfile: Dockerfile
-    command: celery -A celery_app worker --loglevel=info
+    command: celery -A tasks worker --loglevel=info
     depends_on:
       - redis
     volumes:

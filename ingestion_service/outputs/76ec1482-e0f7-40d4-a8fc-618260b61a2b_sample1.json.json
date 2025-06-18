@@ -1,0 +1,10 @@
+{
+  "type": "json",
+  "content": {
+    "fruit": "Apple",
+    "size": "Large",
+    "color": "Red"
+  },
+  "file_id": "76ec1482-e0f7-40d4-a8fc-618260b61a2b",
+  "filename": "sample1.json"
+}

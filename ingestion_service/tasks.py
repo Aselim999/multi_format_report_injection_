@@ -1,72 +1,41 @@
-# ingestion_service/tasks.py
-from celery_app import app
-
-@app.task
-def process_uploaded_file(filename, content):
-    print(f"Processing {filename}")
-    # For now, just print. Later, call file-specific processors.
-    return {"filename": filename, "length": len(content)}
-
-# ingestion_service/tasks.py
-from celery_app import app
-import magic
-import mimetypes
-from utils.pdf_processor import process_pdf
-from utils.json_processor import process_json
-
-@app.task
-def process_uploaded_file(filename, content):
-    print(f"Processing {filename}")
-    extension = filename.split('.')[-1].lower()
-
-    if extension == "pdf":
-        return process_pdf(content, filename)
-    elif extension == "json":
-        return process_json(content, filename)
-    else:
-        print(f"Unsupported file type: {extension}")
-        return {"status": "unsupported", "filename": filename}
-
-
 from celery import Celery
-from pathlib import Path
 import os
-import magic  # file type detection
-import uuid
+import json
+from utils.file_handlers import (
+    process_pdf, process_word, process_json,
+    process_sql, process_hl7, process_dicom
+)
 
-from utils.pdf_processor import process_pdf
-from utils.json_processor import process_json
-from utils.hl7_processor import process_hl7
-from utils.dicom_processor import process_dicom
+celery_app = Celery("worker", broker="redis://redis:6379/0")
 
-app = Celery("worker", broker="redis://redis:6379/0")
+@celery_app.task(name="ingestion_service.tasks.process_uploaded_file")
+def process_uploaded_file(file_id, filename, content_bytes):
+    ext = os.path.splitext(filename)[-1].lower()
+    
+    # Select the correct parser based on file extension
+    if ext == ".pdf":
+        parsed = process_pdf(content_bytes)
+    elif ext in [".docx", ".doc"]:
+        parsed = process_word(content_bytes)
+    elif ext == ".json":
+        parsed = process_json(content_bytes)
+    elif ext == ".sql":
+        parsed = process_sql(content_bytes)
+    elif ext == ".hl7" or "hl7" in filename.lower():
+        parsed = process_hl7(content_bytes)
+    elif ext == ".dcm":
+        parsed = process_dicom(content_bytes)
+    else:
+        parsed = {"error": "Unsupported file type", "filename": filename}
 
-UPLOAD_DIR = "/app/uploads"
+    # Add metadata
+    parsed["file_id"] = file_id
+    parsed["filename"] = filename
 
-@app.task(bind=True)
-def process_uploaded_file(self, file_path):
-    try:
-        full_path = Path(UPLOAD_DIR) / file_path
-        file_type = magic.from_file(str(full_path), mime=True)
+    # Save output to JSON
+    os.makedirs("outputs", exist_ok=True)
+    output_path = f"outputs/{file_id}_{filename}.json"
+    with open(output_path, "w", encoding="utf-8") as f:
+        json.dump(parsed, f, indent=2)
 
-        if "pdf" in file_type:
-            result = process_pdf(full_path)
-        elif "json" in file_type:
-            result = process_json(full_path)
-        elif "hl7" in full_path.name.lower():
-            result = process_hl7(full_path)
-        elif "dicom" in file_type or full_path.suffix.lower() in ['.dcm']:
-            result = process_dicom(full_path)
-        else:
-            raise ValueError(f"Unsupported file type: {file_type}")
-
-        # Simulate saving result to DB or return output
-        task_id = str(uuid.uuid4())
-        output_file = Path("/app/outputs") / f"{task_id}.json"
-        output_file.write_text(result, encoding="utf-8")
-
-        return {"status": "completed", "task_id": task_id}
-
-    except Exception as e:
-        self.retry(exc=e, countdown=10, max_retries=3)
-        return {"status": "failed", "error": str(e)}
+    return parsed
