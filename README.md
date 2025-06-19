@@ -16,6 +16,53 @@ This application ingests, processes, and standardizes healthcare reports from va
 
 ---
 
+System Architecture
+                       +------------------------+
+                       |     API Gateway        |
+                       |  (FastAPI + JWT Auth)  |
+                       +-----------+------------+
+                                   |
+                                   v
+                  +-------------------------------+
+                  |  /upload Endpoint             |
+                  |  Receives files via REST API  |
+                  +-------------------------------+
+                                   |
+                                   v
+              +-------------------------------------------+
+              |           Celery Task Queue               |
+              |      (Background processing via Redis)    |
+              +--------------------+----------------------+
+                                   |
+                                   v
+                    +------------------------------+
+                    |     File Parser Module       |
+                    | (PDF, Word, DICOM, HL7, etc) |
+                    +------------------------------+
+                                   |
+                                   v
+                   +-------------------------------+
+                   | Data Transformation Layer     |
+                   |  → Standard JSON Extraction   |
+                   |  → Character Encoding Support |
+                   +-------------------------------+
+                                   |
+                                   v
+             +-----------------------------------------------+
+             | FHIR Resource Generator (FHIR R4 Compliant)   |
+             |  → Patient, Observation, DiagnosticReport     |
+             +-----------------------------------------------+
+                                   |
+                                   v
+          +-------------------------------------------------------+
+          | Output Handler                                        |
+          |  → Save JSON output in /outputs                       |
+          |  → Store metadata + content in PostgreSQL             |
+          |  → Full content & FHIR stored via SQLAlchemy ORM      |
+          +-------------------------------------------------------+
+
+
+
 ## 🚀 Quickstart
 
 ### 1. Clone the repo
