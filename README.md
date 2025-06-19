@@ -29,22 +29,22 @@ cd multi-format-ingestion
    Create a .env file at the root:
 
 ini
-نسخ
-تحرير
+
+
 
 # .env
 
 SECRET_KEY=your_jwt_secret_key 3. Start the services
 bash
-نسخ
-تحرير
+
+
 docker-compose up --build
 Access the API at http://localhost:8000
 
 📂 Project Structure
 graphql
-نسخ
-تحرير
+
+
 .
 ├── app/
 │ ├── main.py # FastAPI entrypoint
@@ -64,8 +64,8 @@ graphql
 To upload, include your JWT token:
 
 bash
-نسخ
-تحرير
+
+
 curl -X POST http://localhost:8000/upload?token=<JWT_TOKEN> \
  -F "file=@/path/to/your/file.pdf"
 🧪 Testing Strategy
@@ -84,13 +84,13 @@ Full flow: Upload → Background Task → DB entry
 
 Run all tests:
 bash
-نسخ
-تحرير
+
+
 pytest
 📥 Example Upload Response
 json
-نسخ
-تحرير
+
+
 {
 "status": "queued",
 "task_id": "abcd-1234",
@@ -115,13 +115,13 @@ JSON
 🐳 Docker Deployment
 Build + Start
 bash
-نسخ
-تحرير
+
+
 docker-compose up --build
 Shut Down
 bash
-نسخ
-تحرير
+
+
 docker-compose down
 📚 API Docs
 Once the app is running, access:
