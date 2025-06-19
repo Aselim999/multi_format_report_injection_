@@ -1,0 +1,6 @@
+{
+  "type": "sql",
+  "error": "'utf-8' codec can't decode byte 0xff in position 0: invalid start byte",
+  "file_id": "daecb346-73a3-47f6-8d85-2d5ec9e37bc7",
+  "filename": "cines count trigger.sql"
+}

@@ -2,12 +2,13 @@ import json
 import os
 from io import BytesIO
 from typing import Any, Dict
-
 from PyPDF2 import PdfReader
 import docx
 import fitz  # PyMuPDF for fallback PDF parsing
 import hl7
 import pydicom
+from utils.dicom_sr_processor import process_dicom_sr
+
 
 def process_pdf(file_bytes: bytes) -> Dict[str, Any]:
     try:
@@ -50,6 +51,12 @@ def process_hl7(file_bytes: bytes) -> Dict[str, Any]:
 def process_dicom(file_bytes: bytes) -> Dict[str, Any]:
     try:
         ds = pydicom.dcmread(BytesIO(file_bytes))
+
+        # If this is a Structured Report, delegate to the SR processor
+        if hasattr(ds, "ContentSequence"):
+            return process_dicom_sr(ds)
+
+        # Otherwise, return basic metadata
         extracted = {
             "PatientName": str(ds.get("PatientName", "")),
             "StudyDate": str(ds.get("StudyDate", "")),
@@ -59,3 +66,4 @@ def process_dicom(file_bytes: bytes) -> Dict[str, Any]:
         return {"type": "dicom", "content": extracted}
     except Exception as e:
         return {"type": "dicom", "error": str(e)}
+

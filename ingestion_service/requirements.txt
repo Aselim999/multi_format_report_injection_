@@ -1,20 +1,30 @@
-# Add your project dependencies here
+# Web framework and server
 fastapi
 uvicorn[standard]
+
+# Database
 sqlalchemy
 psycopg2-binary
-redis
-pydantic
-hl7apy
-pydicom
-python-docx
-PyMuPDF  # for PDFs
+
+# Async & Background
 celery==5.3.6
 redis==5.0.3
+
+# Data validation & parsing
+pydantic
 python-multipart
-python-magic
-pydicom
-PyPDF2
+
+# HL7 and DICOM
+hl7apy
 hl7
+pydicom
+highdicom==0.21.0
 
+# Document parsing
+python-docx
+PyMuPDF
+PyPDF2
+python-magic
 
+# FHIR support
+fhir.resources==7.0.1
