@@ -1,0 +1,59 @@
+{
+  "type": "hl7",
+  "segments": [
+    "MSH|^~\\&|SendingApp|SendingFac|ReceivingApp|ReceivingFac|202506181200||ADT^A01|MSGID1234|P|2.5\nPID|1||123456^^^HOSP^MR||\u0639\u0628\u062f\u0627\u0644\u0644\u0647^\u0645\u0635\u0637\u0641\u0649||19800101|M|||123 Main St^^Metropolis^NY^12345||555-1234\nPV1|1|I|W^389^1^UAB||||12345^Smith^John^A|||SUR|||||1234567890|A"
+  ],
+  "file_id": "0ad79898-c878-4eac-b245-ba00134cc012",
+  "filename": "message.hl7",
+  "fhir": {
+    "patient": {
+      "resourceType": "Patient",
+      "id": "a803e689-ef33-4558-ac49-fd4da3fd0c14",
+      "meta": {
+        "profile": [
+          "http://hl7.org/fhir/StructureDefinition/Patient"
+        ]
+      },
+      "name": [
+        {
+          "given": [
+            "Default User"
+          ]
+        }
+      ],
+      "birthDate": "2000-01-01"
+    },
+    "observation": {
+      "resourceType": "Observation",
+      "id": "3cafc6ef-90e4-4fbe-9787-547bbc7ee9cc",
+      "status": "final",
+      "code": {
+        "text": "Report Summary"
+      },
+      "effectiveDateTime": "2025-06-19T18:18:38.741233",
+      "valueString": "No content"
+    },
+    "report": {
+      "resourceType": "DiagnosticReport",
+      "id": "d7335fe1-cb0a-49ea-b894-9c65855f36d0",
+      "status": "final",
+      "code": {
+        "text": "Multi-format report"
+      },
+      "subject": {
+        "reference": "Patient/a803e689-ef33-4558-ac49-fd4da3fd0c14"
+      },
+      "result": [
+        {
+          "reference": "Observation/3cafc6ef-90e4-4fbe-9787-547bbc7ee9cc"
+        }
+      ],
+      "presentedForm": [
+        {
+          "contentType": "application/json",
+          "data": "b'...'"
+        }
+      ]
+    }
+  }
+}

@@ -8,11 +8,29 @@ services:
       - ../ingestion_service:/app
     depends_on:
       - redis
+      - postgres
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/ingestion_db
+      - PYTHONPATH=/app
+      - JWT_SECRET=super-secret-jwt-key
 
   redis:
     image: redis:7
     ports:
       - "6379:6379"
+
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: ingestion_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
   celery_worker:
     build:
@@ -20,7 +38,24 @@ services:
     command: celery -A tasks worker --loglevel=info
     depends_on:
       - redis
+      - postgres
+    volumes:
+      - ../ingestion_service:/app
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/ingestion_db
+      - PYTHONPATH=/app
+      - JWT_SECRET=super-secret-jwt-key
+
+  init_db:
+    build:
+      context: ../ingestion_service
+    command: python -c "from db.init_db import init_db; init_db()"
+    depends_on:
+      - postgres
     volumes:
       - ../ingestion_service:/app
     environment:
       - PYTHONPATH=/app
+
+volumes:
+  postgres_data:

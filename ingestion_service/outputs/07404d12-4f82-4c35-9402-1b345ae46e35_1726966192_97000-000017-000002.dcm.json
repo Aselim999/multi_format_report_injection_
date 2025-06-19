@@ -1,0 +1,12 @@
+{
+  "type": "dicom",
+  "content": {
+    "PatientName": "CON04_07172008",
+    "StudyDate": "20080717",
+    "Modality": "MR",
+    "StudyDescription": "INVESTIGATORS^Benner"
+  },
+  "file_id": "07404d12-4f82-4c35-9402-1b345ae46e35",
+  "filename": "1726966192_97000-000017-000002.dcm",
+  "fhir_error": "FHIR generation failed: 'str' object cannot be interpreted as an integer"
+}

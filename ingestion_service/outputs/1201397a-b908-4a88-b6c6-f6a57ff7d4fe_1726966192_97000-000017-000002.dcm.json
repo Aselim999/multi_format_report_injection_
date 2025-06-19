@@ -1,0 +1,27 @@
+{
+  "type": "dicom",
+  "content": {
+    "PatientName": "CON04_07172008",
+    "StudyDate": "20080717",
+    "Modality": "MR",
+    "StudyDescription": "INVESTIGATORS^Benner"
+  },
+  "file_id": "1201397a-b908-4a88-b6c6-f6a57ff7d4fe",
+  "filename": "1726966192_97000-000017-000002.dcm",
+  "fhir": {
+    "patient": {
+      "resourceType": "Patient",
+      "id": "f1e6154f-fb54-40ed-94ae-c8003938efbf",
+      "meta": {
+        "profile": [
+          "http://hl7.org/fhir/StructureDefinition/Patient"
+        ]
+      },
+      "name": [
+        {
+          "given": [
+            "Default User"
+          ]
+        }
+      ],
+      "birthDate": 

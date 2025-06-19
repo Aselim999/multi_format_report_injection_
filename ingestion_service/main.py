@@ -1,5 +1,9 @@
 from fastapi import FastAPI
 from routes import router
+from db.models import init_db
+
+if __name__ == "__main__":
+    init_db()
 
 app = FastAPI(
     title="ThakaaMed Multi-Format Report Injection API",

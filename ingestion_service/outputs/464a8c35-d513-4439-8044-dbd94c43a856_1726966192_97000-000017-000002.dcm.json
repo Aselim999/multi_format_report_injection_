@@ -1,0 +1,62 @@
+{
+  "type": "dicom",
+  "content": {
+    "PatientName": "CON04_07172008",
+    "StudyDate": "20080717",
+    "Modality": "MR",
+    "StudyDescription": "INVESTIGATORS^Benner"
+  },
+  "file_id": "464a8c35-d513-4439-8044-dbd94c43a856",
+  "filename": "1726966192_97000-000017-000002.dcm",
+  "fhir": {
+    "patient": {
+      "resourceType": "Patient",
+      "id": "6a97a399-c91a-47ef-8eda-ad9fac45d367",
+      "meta": {
+        "profile": [
+          "http://hl7.org/fhir/StructureDefinition/Patient"
+        ]
+      },
+      "name": [
+        {
+          "given": [
+            "Default User"
+          ]
+        }
+      ],
+      "birthDate": "2000-01-01"
+    },
+    "observation": {
+      "resourceType": "Observation",
+      "id": "d60add8a-fc3c-4e34-b912-2f4688c92b0a",
+      "status": "final",
+      "code": {
+        "text": "Report Summary"
+      },
+      "effectiveDateTime": "2025-06-19T18:11:56.150052",
+      "valueString": "{'PatientName': 'CON04_07172008', 'StudyDate': '20080717', 'Modality': 'MR', 'StudyDescription': 'INVESTIGATORS^Benner'}"
+    },
+    "report": {
+      "resourceType": "DiagnosticReport",
+      "id": "21a09c6e-e8f5-4e06-a043-232f0e55f602",
+      "status": "final",
+      "code": {
+        "text": "Multi-format report"
+      },
+      "subject": {
+        "reference": "Patient/6a97a399-c91a-47ef-8eda-ad9fac45d367"
+      },
+      "result": [
+        {
+          "reference": "Observation/d60add8a-fc3c-4e34-b912-2f4688c92b0a"
+        }
+      ],
+      "presentedForm": [
+        {
+          "contentType": "application/json",
+          "data": "b'...'"
+        }
+      ]
+    }
+  }
+}

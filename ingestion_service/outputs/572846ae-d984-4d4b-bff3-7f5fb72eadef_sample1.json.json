@@ -1,0 +1,11 @@
+{
+  "type": "json",
+  "content": {
+    "fruit": "Apple",
+    "size": "Large",
+    "color": "Red"
+  },
+  "file_id": "572846ae-d984-4d4b-bff3-7f5fb72eadef",
+  "filename": "sample1.json",
+  "fhir_error": "FHIR generation failed: 'str' object cannot be interpreted as an integer"
+}
